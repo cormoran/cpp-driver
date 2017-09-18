@@ -168,6 +168,17 @@ void RequestCallback::set_state(RequestCallback::State next_state) {
   }
 }
 
+CassConsistency RequestCallback::consistency() const {
+  CassConsistency cl = cl_;
+  if(cl_ == CASS_CONSISTENCY_UNKNOWN) {
+    cl = request()->consistency();
+  }
+  if(cl_ == CASS_CONSISTENCY_UNKNOWN && connection_ != NULL) {
+    cl = connection()->config().default_consistency();
+  }
+  return cl;
+}
+
 bool MultipleRequestCallback::get_result_response(const ResponseMap& responses,
                                                   const std::string& index,
                                                   ResultResponse** response) {

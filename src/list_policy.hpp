@@ -36,7 +36,8 @@ public:
 
   virtual QueryPlan* new_query_plan(const std::string& connected_keyspace,
                                     RequestHandler* request_handler,
-                                    const TokenMap* token_map);
+                                    const TokenMap* token_map,
+                                    const CassConsistency consistency);
 
   virtual void on_add(const Host::Ptr& host);
   virtual void on_remove(const Host::Ptr& host);

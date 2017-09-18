@@ -770,7 +770,7 @@ void Session::on_execute(uv_async_t* data) {
 
 QueryPlan* Session::new_query_plan(const RequestHandler::Ptr& request_handler) {
   const CopyOnWritePtr<std::string> keyspace(keyspace_);
-  return load_balancing_policy_->new_query_plan(*keyspace, request_handler.get(), token_map_.get());
+  return load_balancing_policy_->new_query_plan(*keyspace, request_handler.get(), token_map_.get(), config().default_consistency());
 }
 
 SpeculativeExecutionPlan* Session::new_execution_plan(const Request* request) {

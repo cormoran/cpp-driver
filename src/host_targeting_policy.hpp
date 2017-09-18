@@ -38,7 +38,8 @@ public:
 
   virtual QueryPlan* new_query_plan(const std::string& connected_keyspace,
                                     RequestHandler* request_handler,
-                                    const TokenMap* token_map);
+                                    const TokenMap* token_map,
+                                    const CassConsistency consistency);
 
   virtual LoadBalancingPolicy* new_instance() {
     return new HostTargetingPolicy(child_policy_->new_instance());

@@ -81,7 +81,8 @@ public:
       , retry_policy_(new DefaultRetryPolicy())
       , use_schema_(true)
       , use_hostname_resolution_(false)
-      , use_randomized_contact_points_(true) { }
+      , use_randomized_contact_points_(true)
+      , default_consistency_(CASS_CONSISTENCY_LOCAL_ONE) { }
 
   unsigned thread_count_io() const { return thread_count_io_; }
 
@@ -395,6 +396,10 @@ public:
     use_randomized_contact_points_ = enable;
   }
 
+  CassConsistency default_consistency() const { return default_consistency_; }
+  void set_default_consistency(CassConsistency consistency) {
+    default_consistency_ = consistency;
+  }
 private:
   int port_;
   int protocol_version_;
@@ -442,6 +447,7 @@ private:
   bool use_schema_;
   bool use_hostname_resolution_;
   bool use_randomized_contact_points_;
+  CassConsistency default_consistency_;
 };
 
 } // namespace cass

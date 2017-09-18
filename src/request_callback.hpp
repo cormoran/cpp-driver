@@ -84,10 +84,7 @@ public:
   State state() const { return state_; }
   void set_state(State next_state);
 
-  CassConsistency consistency() const {
-    return cl_ != CASS_CONSISTENCY_UNKNOWN ? cl_ : request()->consistency();
-  }
-
+  CassConsistency consistency() const;  
   void set_consistency(CassConsistency cl) { cl_ = cl; }
 
   ResponseMessage* read_before_write_response() const {

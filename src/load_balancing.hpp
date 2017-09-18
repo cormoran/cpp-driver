@@ -92,7 +92,8 @@ public:
 
   virtual QueryPlan* new_query_plan(const std::string& connected_keyspace,
                                     RequestHandler* request_handler,
-                                    const TokenMap* token_map) = 0;
+                                    const TokenMap* token_map,
+                                    const CassConsistency consistency) = 0;
 
   virtual LoadBalancingPolicy* new_instance() = 0;
 };

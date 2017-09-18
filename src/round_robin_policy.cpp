@@ -37,7 +37,8 @@ CassHostDistance RoundRobinPolicy::distance(const Host::Ptr& host) const {
 
 QueryPlan* RoundRobinPolicy::new_query_plan(const std::string& connected_keyspace,
                                             RequestHandler* request_handler,
-                                            const TokenMap* token_map) {
+                                            const TokenMap* token_map,
+                                            const CassConsistency consistency) {
   return new RoundRobinQueryPlan(hosts_, index_++);
 }
 

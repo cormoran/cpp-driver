@@ -52,11 +52,13 @@ void LatencyAwarePolicy::close_handles() {
 
 QueryPlan* LatencyAwarePolicy::new_query_plan(const std::string& connected_keyspace,
                                               RequestHandler* request_handler,
-                                              const TokenMap* token_map) {
+                                              const TokenMap* token_map,
+                                              const CassConsistency consistency) {
   return new LatencyAwareQueryPlan(this,
                                    child_policy_->new_query_plan(connected_keyspace,
                                                                  request_handler,
-                                                                 token_map));
+                                                                 token_map,
+                                                                 consistency));
 }
 
 void LatencyAwarePolicy::on_add(const Host::Ptr& host) {

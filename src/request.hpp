@@ -66,14 +66,12 @@ public:
     REQUEST_ERROR_NO_AVAILABLE_STREAM_IDS = -4,
     REQUEST_ERROR_CANCELLED = -5
   };
-
-  static const CassConsistency DEFAULT_CONSISTENCY = CASS_CONSISTENCY_LOCAL_ONE;
-
+  
   typedef std::map<const void*, Buffer> EncodingCache;
 
   Request(uint8_t opcode)
       : opcode_(opcode)
-      , consistency_(DEFAULT_CONSISTENCY)
+      , consistency_(CASS_CONSISTENCY_UNKNOWN)
       , serial_consistency_(CASS_CONSISTENCY_ANY)
       , timestamp_(CASS_INT64_MIN)
       , is_idempotent_(false)

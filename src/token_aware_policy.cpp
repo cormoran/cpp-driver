@@ -46,7 +46,8 @@ void TokenAwarePolicy::init(const Host::Ptr& connected_host,
 
 QueryPlan* TokenAwarePolicy::new_query_plan(const std::string& connected_keyspace,
                                             RequestHandler* request_handler,
-                                            const TokenMap* token_map) {
+                                            const TokenMap* token_map,
+                                            const CassConsistency consistency) {
   if (request_handler != NULL) {
     const RoutableRequest* request = static_cast<const RoutableRequest*>(request_handler->request());
     switch (request->opcode()) {
@@ -65,7 +66,8 @@ QueryPlan* TokenAwarePolicy::new_query_plan(const std::string& connected_keyspac
               return new TokenAwareQueryPlan(child_policy_.get(),
                                              child_policy_->new_query_plan(connected_keyspace,
                                                                            request_handler,
-                                                                           token_map),
+                                                                           token_map,
+                                                                           consistency),
                                              replicas,
                                              index_++);
             }
@@ -80,7 +82,8 @@ QueryPlan* TokenAwarePolicy::new_query_plan(const std::string& connected_keyspac
   }
   return child_policy_->new_query_plan(connected_keyspace,
                                        request_handler,
-                                       token_map);
+                                       token_map,
+                                       consistency);
 }
 
 Host::Ptr TokenAwarePolicy::TokenAwareQueryPlan::compute_next()  {
