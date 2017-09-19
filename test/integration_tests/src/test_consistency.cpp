@@ -16,12 +16,14 @@
 
 #include "test_utils.hpp"
 #include "policy_tools.hpp"
+#include "testing.hpp"
 
 #include "cassandra.h"
 
 #include <boost/test/unit_test.hpp>
 #include <boost/test/debug.hpp>
 #include <boost/thread.hpp>
+#include <boost/format.hpp>
 
 struct ConsistencyTests {
 public:
@@ -286,27 +288,27 @@ BOOST_AUTO_TEST_CASE(cluster_consistency)
   policy_tool.create_schema(session.get(), 1); // replication_factor = 1
 
   {
-    cass_cluster_set_consistency(cluster, CASS_CONSISTENCY_ONE);
+    cass_cluster_set_consistency(cluster.get(), CASS_CONSISTENCY_ONE);
     std::string query = str(boost::format("INSERT INTO %s (k, i) VALUES (0, 0)") % test_utils::SIMPLE_TABLE);
-    for (int i = 0; i < n; ++i) {
+    for (int i = 0; i < 12; ++i) {
       test_utils::CassStatementPtr statement(cass_statement_new_n(query.data(), query.size(), 0));
       // cass_statement_set_consistency(statement.get(), CASS_CONSISTENCY_UNKNOWN);
       test_utils::CassFuturePtr future(cass_session_execute(session.get(), statement.get()));
       test_utils::wait_and_check_error(future.get());
-      CassErrorResult *result = cass_future_get_error_result(future.get());
+      const CassErrorResult* result = cass_future_get_error_result(future.get());
       BOOST_CHECK_EQUAL(cass_error_result_consistency(result), CASS_CONSISTENCY_ONE);
       policy_tool.add_coordinator(cass::get_host_from_future(future.get()));
     }
   }
   {
-    cass_cluster_set_consistency(cluster, CASS_CONSISTENCY_ANY);
+    cass_cluster_set_consistency(cluster.get(), CASS_CONSISTENCY_ANY);
     std::string query = str(boost::format("INSERT INTO %s (k, i) VALUES (0, 0)") % test_utils::SIMPLE_TABLE);
-    for (int i = 0; i < n; ++i) {
+    for (int i = 0; i < 12; ++i) {
       test_utils::CassStatementPtr statement(cass_statement_new_n(query.data(), query.size(), 0));
       // cass_statement_set_consistency(statement.get(), CASS_CONSISTENCY_UNKNOWN);
       test_utils::CassFuturePtr future(cass_session_execute(session.get(), statement.get()));
       test_utils::wait_and_check_error(future.get());
-      CassErrorResult *result = cass_future_get_error_result(future.get());
+      const CassErrorResult* result = cass_future_get_error_result(future.get());
       BOOST_CHECK_EQUAL(cass_error_result_consistency(result), CASS_CONSISTENCY_ANY);
       policy_tool.add_coordinator(cass::get_host_from_future(future.get()));
     }
