@@ -1787,6 +1787,20 @@ cass_cluster_set_constant_speculative_execution_policy(CassCluster* cluster,
 CASS_EXPORT CassError
 cass_cluster_set_no_speculative_execution_policy(CassCluster* cluster);
 
+/**
+ * Sets the default consistency of request.
+ *
+ * <b>Default:</b> CASS_CONSISTENCY_LOCAL_ONE
+ *
+ * @public @memberof CassCluster
+ *
+ * @param[in] cluster
+ * @param[in] consistency
+ */
+CASS_EXPORT void
+cass_cluster_set_consistency(CassCluster* cluster,
+                             CassConsistency consistency);
+
 /***********************************************************************************
  *
  * Session

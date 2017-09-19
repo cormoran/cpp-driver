@@ -461,6 +461,10 @@ CassError cass_cluster_set_no_speculative_execution_policy(CassCluster* cluster)
   return CASS_OK;
 }
 
+void cass_cluster_set_consistency(CassCluster* cluster, CassConsistency consistency) {
+  cluster->config().set_default_consistency(consistency);
+}
+
 void cass_cluster_free(CassCluster* cluster) {
   delete cluster->from();
 }
